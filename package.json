@@ -2,7 +2,7 @@
   "name": "korest",
   "version": "2.0.0",
   "private": true,
-  "description": "KoRest — self-hosted KOReader sync for Readest (kosync-compatible API, SQLite)",
+  "description": "KoRest — self-hosted KOReader sync for Readest App",
   "type": "module",
   "engines": {
     "node": ">=20"

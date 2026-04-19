@@ -8,29 +8,48 @@ KoRest is a tiny superlightweight drop in replacement for [KOReader Sync Server]
 KoRest gives Readest the same syncing experience as Readest Cloud or KOReader Sync, but with a tiny service you control.
 
 
-## Quick start (Docker)
+## Quick start (Docker Compose, recommended)
 
-From this repository:
+Pre-built images are on **GitHub Container Registry**: [`ghcr.io/peet86/korest`](https://github.com/peet86/korest/pkgs/container/korest).
 
-```bash
-docker build -t korest:latest .
-docker run -d --name korest -p 4242:4242 -v korest-data:/data korest:latest
-```
-
-or with Docker Compose: 
+**Option A — download the compose file and run** (no git clone):
 
 ```bash
-docker compose up -d
+mkdir korest && cd korest
+curl -fsSL -o docker-compose.yml https://raw.githubusercontent.com/peet86/korest/main/docker-compose.yml
+docker compose pull && docker compose up -d
 ```
 
-This builds the image, publishes port **4242**, and keeps the SQLite database in the named volume **`korest-data`** (see `docker-compose.yml`).
+**Option B — clone this repo**, then from the project directory:
+
+```bash
+docker compose pull && docker compose up -d
+```
+
+That publishes port **4242** and stores SQLite in the named volume **`korest-data`**.
+
+To pin a version instead of `latest`, set `image` in `docker-compose.yml` to a tag listed on the [container package](https://github.com/peet86/korest/pkgs/container/korest) (for example `ghcr.io/peet86/korest:v1.0.0`).
+
+### `docker run` without Compose
+
+```bash
+docker run -d --name korest -p 4242:4242 -v korest-data:/data ghcr.io/peet86/korest:latest
+```
+
+### Build the image locally (from source)
+
+```bash
+git clone https://github.com/peet86/korest.git && cd korest
+docker build -t korest:local .
+docker run -d --name korest -p 4242:4242 -v korest-data:/data korest:local
+```
 
 ## Configuration (optional)
 
 | Environment variable | Meaning |
 |----------------------|--------|
 | `PORT` | HTTP port (default **4242** in the Docker image and when running locally without `PORT`). |
-| `KOSYNC_DATABASE_PATH` | Where SQLite stores data (default **`/data/kosync.db`**). |
+| `KOREST_DATABASE_PATH` | Where SQLite stores data (default **`/data/korest.db`**). |
 | `LOG_INCOMING_REQUESTS` | `true` / `false` — extra request logging for debugging. |
 
 ### A word on privacy and HTTPS
@@ -41,7 +60,7 @@ KoRest stores whatever **login secret** your client sends (Readest follows the s
 
 ## Setup in Readest
 
-![Readest menu: choose KOReader Sync, then enter your KoRest server URL and credentials](docs/korest.png)
+![Readest menu: choose KOReader Sync, then enter your KoRest server URL and credentials](docs/korest2.png)
 
 Open the **menu** in Readest and choose **KOReader Sync**. Set the **custom sync server** to your KoRest URL, for example `https://sync.myserver.com`—use HTTPS when the server is reachable from the internet. Pick any **username** and **password** you like: KoRest will **create the account on first use** and store it in your database. Use the **same** username and password on every device so progress stays in sync. KoRest supports **multiple users**; each pair of credentials is isolated.
 

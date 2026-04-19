@@ -11,7 +11,7 @@ USER node
 
 ENV NODE_ENV=production
 ENV PORT=4242
-ENV KOSYNC_DATABASE_PATH=/data/kosync.db
+ENV KOREST_DATABASE_PATH=/data/korest.db
 
 EXPOSE 4242
 

@@ -1,10 +1,5 @@
 /**
- * KoRest — self-hosted KOReader sync for Readest (kosync-compatible HTTP API).
- *
- * `POST /users/create` stores username + password (client MD5 in body; same value as `X-Auth-Key`).
- * Progress row id: `username + '\n' + passwordKey + '\n' + document` (32-hex documents lowercased in the key only).
- *
- * `KOSYNC_DATABASE_PATH` — SQLite file (default `/data/kosync.db`). WAL mode.
+ * KoRest — self-hosted KOReader sync server for Readest App (koreader-sync-server compatible HTTP API).
  */
 
 import { mkdirSync } from 'fs';
@@ -14,10 +9,10 @@ import Database from 'better-sqlite3';
 import Fastify from 'fastify';
 
 const APP_NAME = 'KoRest';
-const APP_TAGLINE = 'Self-hosted KOReader sync for Readest';
+const APP_TAGLINE = 'Self-hosted KOReader sync server for Readest';
 
 const port = Number(process.env.PORT || 4242);
-const dbPath = (process.env.KOSYNC_DATABASE_PATH || '/data/kosync.db').trim();
+const dbPath = (process.env.KOREST_DATABASE_PATH || '/data/korest.db').trim();
 const logIncoming =
   (process.env.LOG_INCOMING_REQUESTS ?? process.env.LOG_REQUEST_PAYLOADS ?? 'true').toLowerCase() !== 'false';
 
