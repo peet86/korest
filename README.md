@@ -1,11 +1,12 @@
 # KoRest 
-Minimalistic, self-hosted **reading progress syncronization across your Readest Apps** 
+Self-hosted **reading progress syncronization** for your ebooks across **Readest Apps** 
 
-KoRest is a tiny superlightweight drop in replacement for [KOReader Sync Server](https://github.com/koreader/koreader-sync-server). A tiny dockerized self-hosted script that lets your **Readest Apps** sync where you are in a book -across phones, tablets, and desktops— without sending that data to someone else’s cloud.
+- 📱 **Readest everywhere** — phones, tablets, and desktops stay in step on where you left off in a book.
+- ✨ **No Readest signup** — use KoRest for sync without creating a Readest cloud account.
+- 🪶 **Small drop-in** — lightweight alternative to [KOReader Sync Server](https://github.com/koreader/koreader-sync-server)
+- 🧩 **Multi-arch Docker** — **arm64** and **amd64** images, it runs natively on Apple Silicon and ARM boards
+- 🏠 **Self-hosted** — reading progress stays on **your** self-hosted server; nothing is sent to a vendor’s sync cloud.
 
-### Why bother self-hosting this?
-
-KoRest gives Readest the same syncing experience as Readest Cloud or KOReader Sync, but with a tiny service you control.
 
 
 ## Quick start (Docker Compose, recommended)
@@ -56,11 +57,13 @@ docker run -d --name korest -p 4242:4242 -v korest-data:/data korest:local
 
 KoRest stores whatever **login secret** your client sends (Readest follows the same pattern as KOReader here—typically a **hash**, not your plain-text password). Treat the SQLite file like any credential store. **Use HTTPS** in front of KoRest on the public internet so sync traffic is not readable in transit.
 
+A standard healthcheck endpoint is already exposed for you on /healthstatus with JSON ressponee (healthy, counts, database path) in case your traefik or uptime monitoring requires it. 
+
 ---
 
 ## Setup in Readest
 
-![Readest menu: choose KOReader Sync, then enter your KoRest server URL and credentials](docs/korest2.png)
+![Readest menu: choose KOReader Sync, then enter your KoRest server URL and credentials](docs/korest.png)
 
 Open the **menu** in Readest and choose **KOReader Sync**. Set the **custom sync server** to your KoRest URL, for example `https://sync.myserver.com`—use HTTPS when the server is reachable from the internet. Pick any **username** and **password** you like: KoRest will **create the account on first use** and store it in your database. Use the **same** username and password on every device so progress stays in sync. KoRest supports **multiple users**; each pair of credentials is isolated.
 
